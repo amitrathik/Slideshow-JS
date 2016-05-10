@@ -8,10 +8,10 @@
 	<script type="text/javascript">
 		var configs = {
 				mediaType : 'slideshow',
-				withAudio : false,
+				withAudio : true,
 				autoplay : true,
 				lengthPerSlide : 5,
-				clickThroughWaitTime : 15
+				clickThroughWaitTime : 0
 		};
 	</script>
 	<script src="../script.js"></script>
@@ -63,11 +63,12 @@
 				<li><a  class="progress-bar__progress" href="#" data-timeline="25" data-progress="5">o</a></li>
 			</ol>
 		</div>
-		<audio controls autoplay>
+		<audio controls>
 			<source src="audio.mp3" type="audio/mpeg" >
 		</audio>
 		<button class="js-Prev">Previous</button>
 		<button class="js-Next">Next</button>
+		<button class="js-Pause">Pause</button>
 	</div>
 </body>
 </html>

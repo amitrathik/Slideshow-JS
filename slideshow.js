@@ -1,4 +1,3 @@
-
 var slideshow = {
 	load : function() {
 		return $('.media-player__content-slide').map(function(){
@@ -30,13 +29,18 @@ var slideshow = {
 		start : function(args){
 			$('.media-player__content-slide').each(function(index){
 				var slide = $(this);
-				var currentSlide = setTimeout(function(){	
+				setTimeout(function(){	
 					slideshow.controls.next(args.slides);
 				}, args.lengthPerSlide * (index+1));
 			});
 		},
 		pause : function(args){
-			
+			$('.media-player__content-slide').each(function(index){
+				var slide = $(this);
+				setTimeout(function(){	
+					slideshow.controls.next(args.slides);
+				}, args.lengthPerSlide * (index+1));
+			});
 		}
 	}
 };
@@ -44,10 +48,10 @@ var slideshow = {
 var audio = {
 	controls : {
 		start : function(args){
-			
+			var audioEl = $('body').find('audio').trigger('play');
 		},
 		pause : function(args){
-			
+			var audioEl = $('body').find('audio').trigger('pause');
 		}
 	}
 };
@@ -56,7 +60,7 @@ var progressBar = {
 	start : function(args){
 		$('.progress-bar__progress').each(function(index){
 			var progress = $(this);
-			var currentProgress = setTimeout(function(){
+			setTimeout(function(){
 				progress.css('border','1px solid #666');
 				progress.css('background-color','#00ff00');
 			},args.lengthPerSlide * ( index+1));
