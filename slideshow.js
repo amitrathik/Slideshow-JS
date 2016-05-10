@@ -1,3 +1,5 @@
+var progressOfSlides = {};
+var progressOfBar = {};
 var slideshow = {
 	load : function() {
 		return $('.media-player__content-slide').map(function(){
@@ -28,19 +30,19 @@ var slideshow = {
 		},
 		start : function(args){
 			$('.media-player__content-slide').each(function(index){
-				var slide = $(this);
-				setTimeout(function(){	
+				var thisSlide = $(this);
+				var currentSlide = setTimeout(function(){	
 					slideshow.controls.next(args.slides);
 				}, args.lengthPerSlide * (index+1));
+				progressOfSlides[currentSlide] = 1;
+
 			});
 		},
-		pause : function(args){
-			$('.media-player__content-slide').each(function(index){
-				var slide = $(this);
-				setTimeout(function(){	
-					slideshow.controls.next(args.slides);
-				}, args.lengthPerSlide * (index+1));
-			});
+		pause : function(){
+			for (var currentSlide in progressOfSlides) if (progressOfSlides.hasOwnProperty(currentSlide)) {
+			    clearTimeout(currentSlide);
+			    delete progressOfSlides[currentSlide];
+			  }
 		}
 	}
 };
@@ -59,15 +61,19 @@ var audio = {
 var progressBar = {
 	start : function(args){
 		$('.progress-bar__progress').each(function(index){
-			var progress = $(this);
-			setTimeout(function(){
-				progress.css('border','1px solid #666');
-				progress.css('background-color','#00ff00');
+			var thisProgress = $(this);
+			var currentProgress = setTimeout(function(){
+				thisProgress.css('border','1px solid #666');
+				thisProgress.css('background-color','#00ff00');
 			},args.lengthPerSlide * ( index+1));
+			progressOfBar[currentProgress] = 1;
 		});
 	},
-	pause : function(args){
-		
+	pause : function(){
+		for (var currentProgress in progressOfBar) if (progressOfBar.hasOwnProperty(currentProgress)) {
+		    clearTimeout(currentProgress);
+		    delete progressOfBar[currentProgress];
+		  }
 	},
 	update : function(args){
 		
