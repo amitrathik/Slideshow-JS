@@ -4,8 +4,17 @@
 	<meta charset="UTF-8">
 	<title>Slideshow JS</title>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
-	<script src="../script.js"></script>
 	<script src="../slideshow.js"></script>
+	<script type="text/javascript">
+		var configs = {
+				mediaType : 'slideshow',
+				withAudio : false,
+				autoplay : true,
+				lengthPerSlide : 5,
+				clickThroughWaitTime : 15
+		};
+	</script>
+	<script src="../script.js"></script>
 	<style>
 		body{margin:0;padding:0;}
 		.container { width:80%; position:relative; display:block; margin:0 auto;}
@@ -29,11 +38,11 @@
 		<h2>Slideshow With Audio and With AutoPlay</h2>
 		<div class="timeline">
 			<ol>
-				<li><a href="#" data-timeline="1">Red Slide</a></li>
-				<li><a href="#" data-timeline="2">Blue Slide</a></li>
-				<li><a href="#" data-timeline="3">Green Slide</a></li>
-				<li><a href="#" data-timeline="4">Purple Slide</a></li>
-				<li><a href="#" data-timeline="5">Yellow Slide</a></li>
+				<li><a href="#" data-timeline="5">Red Slide</a> <span>0:05</span></li>
+				<li><a href="#" data-timeline="10">Blue Slide</a><span>0:10</span></li>
+				<li><a href="#" data-timeline="15">Green Slide</a><span>0:15</span></li>
+				<li><a href="#" data-timeline="20">Purple Slide</a><span>0:20</span></li>
+				<li><a href="#" data-timeline="25">Yellow Slide</a><span>0:25</span></li>
 			</ol>
 		</div>
 		<div class="media-player">
@@ -45,7 +54,15 @@
 				<div class="media-player__content-slide media-player__content-slide--next" data-slide="5" style="background-color:yellow;"></div> 
 			</div>
 		</div>
-		<div class="progress-bar"></div>
+		<div class="progress-bar">
+			<ol>
+				<li><a class="progress-bar__progress" href="#" data-timeline="5" data-progress="1">o</a></li>
+				<li><a  class="progress-bar__progress" href="#" data-timeline="10" data-progress="2">o</a></li>
+				<li><a  class="progress-bar__progress" href="#" data-timeline="15" data-progress="3">o</a></li>
+				<li><a  class="progress-bar__progress" href="#" data-timeline="20" data-progress="4">o</a></li>
+				<li><a  class="progress-bar__progress" href="#" data-timeline="25" data-progress="5">o</a></li>
+			</ol>
+		</div>
 		<audio controls autoplay>
 			<source src="audio.mp3" type="audio/mpeg" >
 		</audio>
