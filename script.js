@@ -12,48 +12,35 @@ $(function(){
 	}).get();
 	
 	if(configs.autoplay){
-		play(configs.lengthPerSlide * 1000);
+		play(slides,configs.lengthPerSlide * 1000);
 	}
 	
 	$('body').on('click','.js-Next',{},function(){
-		setTimeout(next(slides),3000);
+		setTimeout(slideshow.controls.next(slides),3000);
 	});
 	$('body').on('click','.js-Prev',{},function(){
-		setTimeout(prev(slides),3000);
+		setTimeout(slideshow.controls.prev(slides),3000);
 	});
 });
 
-// Load next slide, move current slide to previous position
-function next(slides){
-	var currentSlideId = $('.media-player__content-slide--current').data('slide');
-	if(currentSlideId < slides.length){
-		var currentSlideEl = $('body').find('[data-slide='+currentSlideId+']');
-		currentSlideEl.addClass('media-player__content-slide--previous').removeClass('media-player__content-slide--current');
-		var nextSlideId = currentSlideId + 1 < slides.length ? currentSlideId + 1 : slides.length;
-		var nextSlideEl = $('body').find('[data-slide='+nextSlideId+']');
-		nextSlideEl.removeClass('media-player__content-slide--next').addClass('media-player__content-slide--current');
-		
-	}
-}
-// Load previous slide, move current slide to next position
-function prev(slides){
-	var currentSlideId = $('.media-player__content-slide--current').data('slide');
-	if(currentSlideId > 1){
-		var currentSlideEl = $('body').find('[data-slide='+currentSlideId+']');
-		currentSlideEl.addClass('media-player__content-slide--next').removeClass('media-player__content-slide--current');
-		var prevSlideId = currentSlideId - 1 > 0 ? currentSlideId - 1 : 1;
-		var prevSlideEl = $('body').find('[data-slide='+prevSlideId+']');
-		prevSlideEl.removeClass('media-player__content-slide--previous').addClass('media-player__content-slide--current');
-	}
-}
 
 // Play slideshow, with the time per transition = length per slide * index of slide 
-function play(args){
+function play(slides,lengthPerSlide){
 	$('.media-player__content-slide').each(function(index){
 		var slide = $(this);
 		setTimeout(function(){	
-		//
-		}, args * index);
+			next(slides);
+		}, lengthPerSlide * (index+1));
+	});
+	$('.progress-bar__progress').each(function(index){
+		var progress = $(this);
+		setTimeout(function(){
+			progress.css('border','1px solid #666');
+			progress.css('background-color','#00ff00');
+		},lengthPerSlide *( index+1));
 	});
 }
 
+function progress(){
+	
+}

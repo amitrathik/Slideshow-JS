@@ -5,6 +5,7 @@
 	<title>Slideshow JS</title>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
 	<script src="../script.js"></script>
+	<script src="../slideshow.js"></script>
 	<style>
 		body{margin:0;padding:0;}
 		.container { width:80%; position:relative; display:block; margin:0 auto;}
@@ -24,8 +25,8 @@
 	</style>
 </head>
 <body>
-	<h2>Slideshow With Audio and With AutoPlay</h2>
 	<div class="container">
+		<h2>Slideshow With Audio and With AutoPlay</h2>
 		<div class="timeline">
 			<ol>
 				<li><a href="#" data-timeline="1">Red Slide</a></li>
@@ -48,6 +49,8 @@
 		<audio controls autoplay>
 			<source src="audio.mp3" type="audio/mpeg" >
 		</audio>
+		<button class="js-Prev">Previous</button>
+		<button class="js-Next">Next</button>
 	</div>
 </body>
 </html>
