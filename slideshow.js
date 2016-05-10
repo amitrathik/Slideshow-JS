@@ -1,5 +1,10 @@
 
 var slideshow = {
+	load : function() {
+		return $('.media-player__content-slide').map(function(){
+			return $(this).data('slide');
+		}).get();
+	},
 	controls : {
 		next : function(args){
 			var currentSlideId = $('.media-player__content-slide--current').data('slide');

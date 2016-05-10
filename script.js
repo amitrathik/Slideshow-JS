@@ -1,26 +1,29 @@
-var configs = {
-		mediaType : 'slideshow',
-		withAudio : false,
-		autoplay : true,
-		lengthPerSlide : 5,
-		clickThroughWaitTime : 15
-};
 $(function(){
+
 	// grab all the slides into an array
-	var slides = $('.media-player__content-slide').map(function(){
-		return $(this).data('slide');
-	}).get();
+	var slides = slideshow.load();
 	
 	if(configs.autoplay){
 		play(slides,configs.lengthPerSlide * 1000);
+		// convert the config time to seconds
+		var clickThroughWaitTime = configs.clickThroughWaitTime * 1000;
+		setTimeout(function(){
+			$('body').on('click','.js-Next',{},function(){
+				setTimeout(slideshow.controls.next(slides),3000);
+			});
+			$('body').on('click','.js-Prev',{},function(){
+				setTimeout(slideshow.controls.prev(slides),3000);
+			});
+		},clickThroughWaitTime);
+	}else{
+		$('body').on('click','.js-Next',{},function(){
+			setTimeout(slideshow.controls.next(slides),3000);
+		});
+		$('body').on('click','.js-Prev',{},function(){
+			setTimeout(slideshow.controls.prev(slides),3000);
+		});
 	}
 	
-	$('body').on('click','.js-Next',{},function(){
-		setTimeout(slideshow.controls.next(slides),3000);
-	});
-	$('body').on('click','.js-Prev',{},function(){
-		setTimeout(slideshow.controls.prev(slides),3000);
-	});
 });
 
 
@@ -29,7 +32,7 @@ function play(slides,lengthPerSlide){
 	$('.media-player__content-slide').each(function(index){
 		var slide = $(this);
 		setTimeout(function(){	
-			next(slides);
+			slideshow.controls.next(slides);
 		}, lengthPerSlide * (index+1));
 	});
 	$('.progress-bar__progress').each(function(index){
