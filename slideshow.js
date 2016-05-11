@@ -2,15 +2,23 @@ var progressOfSlides = {};
 var progressOfBar = {};
 var slidesWatched = [];
 
+var viewerConfigs = {
+	'defaultClass' : 'media-player__content-slide',
+	'activeClass' : 'media-player__content-slide--current',
+	'previousClass' : 'media-player__content-slide--previous',
+	'nextClass' : 'media-player__content-slide--next',
+	'watchedClass' : 'media-player__content-slide--watched'
+}
+
 var slideshow = {
 	load : function() {
-		return $('.media-player__content-slide').map(function(){
+		return $('.' + viewerConfigs.defaultClass).map(function(){
 			return $(this).data('slide');
 		}).get();
 	},
 	controls : {
 		next : function(args){
-			var currentSlideId = $('.media-player__content-slide--current').data('slide');
+			var currentSlideId = $('.' + viewerConfigs.activeClass).data('slide');
 			//Add the current slide to the slideswatched array
 			if(slidesWatched.indexOf(currentSlideId) == -1){
 				slidesWatched.push(currentSlideId);
@@ -19,30 +27,30 @@ var slideshow = {
 			progressBar.update(currentSlideProgressMarker);
 			if(currentSlideId < args.length){
 				var currentSlideEl = $('body').find('[data-slide='+currentSlideId+']');
-				currentSlideEl.addClass('media-player__content-slide--previous').removeClass('media-player__content-slide--current');
+				currentSlideEl.addClass(viewerConfigs.previousClass).removeClass(viewerConfigs.activeClass);
 				// add the --watched class to slides that have been watched if they don't exist already
-				if(!currentSlideEl.hasClass('media-player__content-slide--watched')){
-					currentSlideEl.addClass('media-player__content-slide--watched');
+				if(!currentSlideEl.hasClass(viewerConfigs.watchedClass)){
+					currentSlideEl.addClass(viewerConfigs.watchedClass);
 				}
 				var nextSlideId = currentSlideId + 1 < args.length ? currentSlideId + 1 : args.length;
 				var nextSlideEl = $('body').find('[data-slide='+nextSlideId+']');
-				nextSlideEl.removeClass('media-player__content-slide--next').addClass('media-player__content-slide--current');
+				nextSlideEl.removeClass(viewerConfigs.nextClass).addClass(viewerConfigs.activeClass);
 			}
 		},
 		prev : function(args){
-			var currentSlideId = $('.media-player__content-slide--current').data('slide');
+			var currentSlideId = $('.' + viewerConfigs.activeClass).data('slide');
 			if(currentSlideId > 1){
 				var currentSlideEl = $('body').find('[data-slide='+currentSlideId+']');
-				currentSlideEl.addClass('media-player__content-slide--next').removeClass('media-player__content-slide--current');
+				currentSlideEl.addClass(viewerConfigs.nextClass).removeClass(viewerConfigs.activeClass);
 				var prevSlideId = currentSlideId - 1 > 0 ? currentSlideId - 1 : 1;
 				var prevSlideEl = $('body').find('[data-slide='+prevSlideId+']');
-				prevSlideEl.removeClass('media-player__content-slide--previous').addClass('media-player__content-slide--current');
+				prevSlideEl.removeClass(viewerConfigs.previousClass).addClass(viewerConfigs.activeClass);
 			}
 		},
 		start : function(args){
 			if(!args.withAudio){
 				// if no audio, then length per slide is going to be set as a constant
-				$('.media-player__content-slide').each(function(index){
+				$('.'+viewerConfigs.defaultClass).each(function(index){
 					var thisSlide = $(this);
 					var currentSlide = setTimeout(function(){	
 						slideshow.controls.next(args.slides);
@@ -52,7 +60,7 @@ var slideshow = {
 				});
 			}else{
 				// if audio, then length per slide is going to depend on duration
-				$('.media-player__content-slide').each(function(index){
+				$('.' + viewerConfigs.defaultClass).each(function(index){
 					var thisSlide = $(this);
 					var thisSlideDuration = args.lengthPerSlide[index];
 					var currentSlide = setTimeout(function(){	

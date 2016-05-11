@@ -26,7 +26,7 @@ $(function(){
 			// convert the config time to seconds
 			var clickThroughWaitTime = configs.clickThroughWaitTime * 1000;
 			var lengthPerSlide = configs.lengthPerSlide * 1000;
-			var currentSlideId = $('.media-player__content-slide--current').data('slide');
+			var currentSlideId = $('.' + viewerConfigs.activeClass).data('slide');
 			var currentSlideEl = $('body').find('[data-slide='+currentSlideId+']');
 			setTimeout(function(){
 				$('body').on('click','.js-Next',{},function(){
@@ -77,26 +77,26 @@ $(function(){
 			// has no length per slide
 			// length per slide will depend on the timestamp
 			var duration =[];
-			$('.media-player__content-slide').each(function(index){
+			$('.' + viewerConfigs.defaultClass).each(function(index){
 				duration.push($(this).attr('data-timestamp')*1000);
 			});
 			
 			$('body').on('click','.js-Next',{},function(){
 				slideshow.controls.pause();
 				// find the slide with the current class on it, get it's id
-				var currentSlideId = $('.media-player__content-slide--current').data('slide');
+				var currentSlideId = $('.' + viewerConfigs.activeClass).data('slide');
 				var currentSlideEl = $('body').find('[data-slide='+currentSlideId+']');
 				var nextSlideId;
-				if(currentSlideId > slides.length){
+				if(currentSlideId + 1 > slides.length){
 					nextSlideId = slides.length;
 				}else{
 					nextSlideId = currentSlideId + 1;
 				}
-				// get the previous slide id
+				// get the next slide id
 				var nextEl = $('body').find('[data-slide='+nextSlideId+']');
 				// we want to get the time stamp of that slide
-				if(nextSlideId == 1){
-					var currentTimeStamp = 0
+				if(nextSlideId > slides.length){
+					var currentTimeStamp = slides.length;
 				}else{
 					var currentTimeStamp = nextEl.attr('data-timestamp');
 				}
@@ -111,7 +111,7 @@ $(function(){
 			}).on('click','.js-Prev',{},function(){
 				slideshow.controls.pause();
 				// find the slide with the current class on it, get it's id
-				var currentSlideId = $('.media-player__content-slide--current').data('slide');
+				var currentSlideId = $('.' + viewerConfigs.activeClass).data('slide');
 				var currentSlideEl = $('body').find('[data-slide='+currentSlideId+']');
 				var prevSlideId;
 				if(currentSlideId < 1){
@@ -137,7 +137,7 @@ $(function(){
 				});
 			}).on('click','.js-Pause',{},function(){
 				// find the slide with the current class on it, get it's id
-				var currentSlideId = $('.media-player__content-slide--current').data('slide');
+				var currentSlideId = $('.' + viewerConfigs.activeClass).data('slide');
 				var currentSlideEl = $('body').find('[data-slide='+currentSlideId+']');
 				// we want to get the time stamp of that slide
 				if(currentSlideId == 1){
@@ -166,7 +166,7 @@ $(function(){
 			// has no length per slide
 			// length per slide will depend on the timestamp
 			var duration =[];
-			$('.media-player__content-slide').each(function(index){
+			$('.' + viewerConfigs.defaultClass).each(function(index){
 				duration.push($(this).attr('data-timestamp')*1000);
 			});
 			audio.controls.start();
@@ -180,7 +180,7 @@ $(function(){
 			}).on('click','.js-Prev',{},function(){
 				setTimeout(slideshow.controls.prev(slides),3000);
 			}).on('click','.js-Pause',{},function(){
-				var currentSlideId = $('.media-player__content-slide--current').data('slide');
+				var currentSlideId = $('.' + viewerConfigs.activeClass).data('slide');
 				var currentSlideEl = $('body').find('[data-slide='+currentSlideId+']');
 				if(currentSlideId == 1){
 					var currentTimeStamp = 0
