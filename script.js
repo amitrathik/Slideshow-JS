@@ -31,7 +31,7 @@ $(function(){
 			setTimeout(function(){
 				$('body').on('click','.js-Next',{},function(){
 					slideshow.controls.pause();
-					progressBar.pause();
+//					progressBar.pause();
 					// we want to make sure they have already viewed the next slide, else they have to wait
 					if(slidesWatched.indexOf(currentSlideEl) != -1){
 						setTimeout(slideshow.controls.next(slides));
@@ -40,34 +40,34 @@ $(function(){
 							slides : slides,
 							lengthPerSlide : lengthPerSlide
 						});
-						progressBar.start({
-							lengthPerSlide : lengthPerSlide
-						});
+//						progressBar.start({
+//							lengthPerSlide : lengthPerSlide
+//						});
 					}
 				}).on('click','.js-Prev',{},function(){
 					// pause everything
 					slideshow.controls.pause();
-					progressBar.pause();
+//					progressBar.pause();
 					setTimeout(slideshow.controls.prev(slides));
 					// resume everything
 					slideshow.controls.start({
 						slides : slides,
 						lengthPerSlide : lengthPerSlide
 					});
-					progressBar.start({
-						lengthPerSlide : lengthPerSlide
-					});
+//					progressBar.start({
+//						lengthPerSlide : lengthPerSlide
+//					});
 				}).on('click','.js-Pause',{},function(){
 					slideshow.controls.pause();
-					progressBar.pause();
+//					progressBar.pause();
 				}).on('click','.js-Play',{},function(){
 					slideshow.controls.start({
 						slides : slides,
 						lengthPerSlide : lengthPerSlide
 					});
-					progressBar.start({
-						lengthPerSlide : lengthPerSlide
-					});
+//					progressBar.start({
+//						lengthPerSlide : lengthPerSlide
+//					});
 				});
 			},clickThroughWaitTime);
 			
@@ -76,9 +76,9 @@ $(function(){
 				slides : slides,
 				lengthPerSlide : lengthPerSlide
 			});
-			progressBar.start({
-				lengthPerSlide : lengthPerSlide
-			});
+//			progressBar.start({
+//				lengthPerSlide : lengthPerSlide
+//			});
 			
 		}
 	}else{ 

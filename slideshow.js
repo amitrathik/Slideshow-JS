@@ -15,6 +15,8 @@ var slideshow = {
 			if(slidesWatched.indexOf(currentSlideId) == -1){
 				slidesWatched.push(currentSlideId);
 			}
+			var currentSlideProgressMarker = $('body').find('[data-progress='+currentSlideId+']');
+			progressBar.update(currentSlideProgressMarker);
 			if(currentSlideId < args.length){
 				var currentSlideEl = $('body').find('[data-slide='+currentSlideId+']');
 				currentSlideEl.addClass('media-player__content-slide--previous').removeClass('media-player__content-slide--current');
@@ -25,7 +27,6 @@ var slideshow = {
 				var nextSlideId = currentSlideId + 1 < args.length ? currentSlideId + 1 : args.length;
 				var nextSlideEl = $('body').find('[data-slide='+nextSlideId+']');
 				nextSlideEl.removeClass('media-player__content-slide--next').addClass('media-player__content-slide--current');
-				
 			}
 		},
 		prev : function(args){
@@ -69,23 +70,24 @@ var audio = {
 };
 
 var progressBar = {
-	start : function(args){
-		$('.progress-bar__progress').each(function(index){
-			var thisProgress = $(this);
-			var currentProgress = setTimeout(function(){
-				thisProgress.css('border','1px solid #666');
-				thisProgress.css('background-color','#00ff00');
-			},args.lengthPerSlide * ( index+1));
-			progressOfBar[currentProgress] = 1;
-		});
-	},
-	pause : function(){
-		for (var currentProgress in progressOfBar) if (progressOfBar.hasOwnProperty(currentProgress)) {
-		    clearTimeout(currentProgress);
-		    delete progressOfBar[currentProgress];
-		  }
-	},
+//	start : function(args){
+//		$('.progress-bar__progress').each(function(index){
+//			var thisProgress = $(this);
+//			var currentProgress = setTimeout(function(){
+//				thisProgress.css('border','1px solid #666');
+//				thisProgress.css('background-color','#00ff00');
+//			},args.lengthPerSlide * ( index+1));
+//			progressOfBar[currentProgress] = 1;
+//		});
+//	},
+//	pause : function(){
+//		for (var currentProgress in progressOfBar) if (progressOfBar.hasOwnProperty(currentProgress)) {
+//		    clearTimeout(currentProgress);
+//		    delete progressOfBar[currentProgress];
+//		  }
+//	},
 	update : function(args){
-		
+		args.css('background-color','#00ff00');
+		// make ajax call to update user data with current progress
 	}
 }
