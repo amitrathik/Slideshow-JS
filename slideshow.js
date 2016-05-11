@@ -1,5 +1,7 @@
 var progressOfSlides = {};
 var progressOfBar = {};
+var slidesWatched = [];
+
 var slideshow = {
 	load : function() {
 		return $('.media-player__content-slide').map(function(){
@@ -9,9 +11,17 @@ var slideshow = {
 	controls : {
 		next : function(args){
 			var currentSlideId = $('.media-player__content-slide--current').data('slide');
+			//Add the current slide to the slideswatched array
+			if(slidesWatched.indexOf(currentSlideId) == -1){
+				slidesWatched.push(currentSlideId);
+			}
 			if(currentSlideId < args.length){
 				var currentSlideEl = $('body').find('[data-slide='+currentSlideId+']');
 				currentSlideEl.addClass('media-player__content-slide--previous').removeClass('media-player__content-slide--current');
+				// add the --watched class to slides that have been watched if they don't exist already
+				if(!currentSlideEl.hasClass('media-player__content-slide--watched')){
+					currentSlideEl.addClass('media-player__content-slide--watched');
+				}
 				var nextSlideId = currentSlideId + 1 < args.length ? currentSlideId + 1 : args.length;
 				var nextSlideEl = $('body').find('[data-slide='+nextSlideId+']');
 				nextSlideEl.removeClass('media-player__content-slide--next').addClass('media-player__content-slide--current');
