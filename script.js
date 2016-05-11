@@ -82,19 +82,74 @@ $(function(){
 			});
 			
 			$('body').on('click','.js-Next',{},function(){
-				setTimeout(slideshow.controls.next(slides),3000);
-			}).on('click','.js-Prev',{},function(){
-				setTimeout(slideshow.controls.prev(slides),3000);
-			}).on('click','.js-Pause',{},function(){
+				slideshow.controls.pause();
+				// find the slide with the current class on it, get it's id
 				var currentSlideId = $('.media-player__content-slide--current').data('slide');
 				var currentSlideEl = $('body').find('[data-slide='+currentSlideId+']');
+				var nextSlideId;
+				if(currentSlideId > slides.length){
+					nextSlideId = slides.length;
+				}else{
+					nextSlideId = currentSlideId + 1;
+				}
+				// get the previous slide id
+				var nextEl = $('body').find('[data-slide='+nextSlideId+']');
+				// we want to get the time stamp of that slide
+				if(nextSlideId == 1){
+					var currentTimeStamp = 0
+				}else{
+					var currentTimeStamp = nextEl.attr('data-timestamp');
+				}
+				$('audio')[0].currentTime = currentTimeStamp;
+				setTimeout(slideshow.controls.next(slides),3000);
+				// set the time of video to the timestamp of the current slide
+				slideshow.controls.start({
+					withAudio : true,
+					slides : slides,
+					lengthPerSlide : duration
+				});
+			}).on('click','.js-Prev',{},function(){
+				slideshow.controls.pause();
+				// find the slide with the current class on it, get it's id
+				var currentSlideId = $('.media-player__content-slide--current').data('slide');
+				var currentSlideEl = $('body').find('[data-slide='+currentSlideId+']');
+				var prevSlideId;
+				if(currentSlideId < 1){
+					prevSlideId = currentSlideId;
+				}else{
+					prevSlideId = currentSlideId - 1;
+				}
+				// get the previous slide id
+				var prevEl = $('body').find('[data-slide='+prevSlideId+']');
+				// we want to get the time stamp of that slide
+				if(currentSlideId == 1){
+					var currentTimeStamp = 0
+				}else{
+					var currentTimeStamp = prevEl.attr('data-timestamp');
+				}
+				$('audio')[0].currentTime = currentTimeStamp;
+				setTimeout(slideshow.controls.prev(slides),3000);
+				// set the time of video to the timestamp of the current slide
+				slideshow.controls.start({
+					withAudio : true,
+					slides : slides,
+					lengthPerSlide : duration
+				});
+			}).on('click','.js-Pause',{},function(){
+				// find the slide with the current class on it, get it's id
+				var currentSlideId = $('.media-player__content-slide--current').data('slide');
+				var currentSlideEl = $('body').find('[data-slide='+currentSlideId+']');
+				// we want to get the time stamp of that slide
 				if(currentSlideId == 1){
 					var currentTimeStamp = 0
 				}else{
 					var currentTimeStamp = currentSlideEl.attr('data-timestamp');
 				}
+				// pause the audio
 				audio.controls.pause();
+				// set the time of video to the timestamp of the current slide
 				$('audio')[0].currentTime = currentTimeStamp;
+				// pause the slideshow
 				slideshow.controls.pause();
 			}).on('click','.js-Play',{},function(){
 				audio.controls.start();
