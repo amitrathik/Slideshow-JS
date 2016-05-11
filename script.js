@@ -31,7 +31,6 @@ $(function(){
 			setTimeout(function(){
 				$('body').on('click','.js-Next',{},function(){
 					slideshow.controls.pause();
-//					progressBar.pause();
 					// we want to make sure they have already viewed the next slide, else they have to wait
 					if(slidesWatched.indexOf(currentSlideEl) != -1){
 						setTimeout(slideshow.controls.next(slides));
@@ -40,34 +39,23 @@ $(function(){
 							slides : slides,
 							lengthPerSlide : lengthPerSlide
 						});
-//						progressBar.start({
-//							lengthPerSlide : lengthPerSlide
-//						});
 					}
 				}).on('click','.js-Prev',{},function(){
 					// pause everything
 					slideshow.controls.pause();
-//					progressBar.pause();
 					setTimeout(slideshow.controls.prev(slides));
 					// resume everything
 					slideshow.controls.start({
 						slides : slides,
 						lengthPerSlide : lengthPerSlide
 					});
-//					progressBar.start({
-//						lengthPerSlide : lengthPerSlide
-//					});
 				}).on('click','.js-Pause',{},function(){
 					slideshow.controls.pause();
-//					progressBar.pause();
 				}).on('click','.js-Play',{},function(){
 					slideshow.controls.start({
 						slides : slides,
 						lengthPerSlide : lengthPerSlide
 					});
-//					progressBar.start({
-//						lengthPerSlide : lengthPerSlide
-//					});
 				});
 			},clickThroughWaitTime);
 			
@@ -76,9 +64,6 @@ $(function(){
 				slides : slides,
 				lengthPerSlide : lengthPerSlide
 			});
-//			progressBar.start({
-//				lengthPerSlide : lengthPerSlide
-//			});
 			
 		}
 	}else{ 
@@ -95,14 +80,22 @@ $(function(){
 			$('.media-player__content-slide').each(function(index){
 				duration.push($(this).attr('data-timestamp')*1000);
 			});
+			
 			$('body').on('click','.js-Next',{},function(){
 				setTimeout(slideshow.controls.next(slides),3000);
 			}).on('click','.js-Prev',{},function(){
 				setTimeout(slideshow.controls.prev(slides),3000);
 			}).on('click','.js-Pause',{},function(){
+				var currentSlideId = $('.media-player__content-slide--current').data('slide');
+				var currentSlideEl = $('body').find('[data-slide='+currentSlideId+']');
+				if(currentSlideId == 1){
+					var currentTimeStamp = 0
+				}else{
+					var currentTimeStamp = currentSlideEl.attr('data-timestamp');
+				}
 				audio.controls.pause();
+				$('audio')[0].currentTime = currentTimeStamp;
 				slideshow.controls.pause();
-//				progressBar.pause();
 			}).on('click','.js-Play',{},function(){
 				audio.controls.start();
 				slideshow.controls.start({
@@ -110,9 +103,6 @@ $(function(){
 					slides : slides,
 					lengthPerSlide : duration
 				});
-//				progressBar.start({
-//					lengthPerSlide : 0
-//				});
 			});
 		}else{
 			// slideshow with audio and with autoplay on
@@ -135,9 +125,16 @@ $(function(){
 			}).on('click','.js-Prev',{},function(){
 				setTimeout(slideshow.controls.prev(slides),3000);
 			}).on('click','.js-Pause',{},function(){
+				var currentSlideId = $('.media-player__content-slide--current').data('slide');
+				var currentSlideEl = $('body').find('[data-slide='+currentSlideId+']');
+				if(currentSlideId == 1){
+					var currentTimeStamp = 0
+				}else{
+					var currentTimeStamp = currentSlideEl.attr('data-timestamp');
+				}
 				audio.controls.pause();
+				$('audio')[0].currentTime = currentTimeStamp;
 				slideshow.controls.pause();
-//				progressBar.pause();
 			}).on('click','.js-Play',{},function(){
 				audio.controls.start();
 				slideshow.controls.start({
@@ -145,9 +142,6 @@ $(function(){
 					slides : slides,
 					lengthPerSlide : duration
 				});
-//				progressBar.start({
-//					lengthPerSlide : 0
-//				});
 			});
 			
 		}
