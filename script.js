@@ -91,6 +91,10 @@ $(function(){
 			// no click through wait time
 			// has no length per slide
 			// length per slide will depend on the timestamp
+			var duration =[];
+			$('.media-player__content-slide').each(function(index){
+				duration.push($(this).attr('data-timestamp')*1000);
+			});
 			$('body').on('click','.js-Next',{},function(){
 				setTimeout(slideshow.controls.next(slides),3000);
 			}).on('click','.js-Prev',{},function(){
@@ -98,16 +102,17 @@ $(function(){
 			}).on('click','.js-Pause',{},function(){
 				audio.controls.pause();
 				slideshow.controls.pause();
-				progressBar.pause();
+//				progressBar.pause();
 			}).on('click','.js-Play',{},function(){
 				audio.controls.start();
 				slideshow.controls.start({
+					withAudio : true,
 					slides : slides,
-					lengthPerSlide : 0
+					lengthPerSlide : duration
 				});
-				progressBar.start({
-					lengthPerSlide : 0
-				});
+//				progressBar.start({
+//					lengthPerSlide : 0
+//				});
 			});
 		}else{
 			// slideshow with audio and with autoplay on
@@ -115,7 +120,16 @@ $(function(){
 			// no click through wait time
 			// has no length per slide
 			// length per slide will depend on the timestamp
+			var duration =[];
+			$('.media-player__content-slide').each(function(index){
+				duration.push($(this).attr('data-timestamp')*1000);
+			});
 			audio.controls.start();
+			slideshow.controls.start({
+				withAudio : true,
+				slides : slides,
+				lengthPerSlide : duration
+			});
 			$('body').on('click','.js-Next',{},function(){
 				setTimeout(slideshow.controls.next(slides),3000);
 			}).on('click','.js-Prev',{},function(){
@@ -123,16 +137,17 @@ $(function(){
 			}).on('click','.js-Pause',{},function(){
 				audio.controls.pause();
 				slideshow.controls.pause();
-				progressBar.pause();
+//				progressBar.pause();
 			}).on('click','.js-Play',{},function(){
 				audio.controls.start();
 				slideshow.controls.start({
+					withAudio : true,
 					slides : slides,
-					lengthPerSlide : 0
+					lengthPerSlide : duration
 				});
-				progressBar.start({
-					lengthPerSlide : 0
-				});
+//				progressBar.start({
+//					lengthPerSlide : 0
+//				});
 			});
 			
 		}

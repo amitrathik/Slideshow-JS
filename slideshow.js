@@ -40,14 +40,29 @@ var slideshow = {
 			}
 		},
 		start : function(args){
-			$('.media-player__content-slide').each(function(index){
-				var thisSlide = $(this);
-				var currentSlide = setTimeout(function(){	
-					slideshow.controls.next(args.slides);
-				}, args.lengthPerSlide * (index+1));
-				progressOfSlides[currentSlide] = 1;
+			if(!args.withAudio){
+				// if no audio, then length per slide is going to be set as a constant
+				$('.media-player__content-slide').each(function(index){
+					var thisSlide = $(this);
+					var currentSlide = setTimeout(function(){	
+						slideshow.controls.next(args.slides);
+					}, args.lengthPerSlide * (index+1));
+					progressOfSlides[currentSlide] = 1;
 
-			});
+				});
+			}else{
+				// if audio, then length per slide is going to depend on duration
+				$('.media-player__content-slide').each(function(index){
+					var thisSlide = $(this);
+					var thisSlideDuration = args.lengthPerSlide[index];
+					var currentSlide = setTimeout(function(){	
+						slideshow.controls.next(args.slides);
+					}, thisSlideDuration);
+					progressOfSlides[currentSlide] = 1;
+
+				});
+				
+			}
 		},
 		pause : function(){
 			for (var currentSlide in progressOfSlides) if (progressOfSlides.hasOwnProperty(currentSlide)) {
