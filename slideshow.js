@@ -27,11 +27,11 @@ var slideshow = {
 			progressBar.update(currentSlideProgressMarker);
 			if(currentSlideId < args.length){
 				var currentSlideEl = $('body').find('[data-slide='+currentSlideId+']');
-				currentSlideEl.addClass(viewerConfigs.previousClass).removeClass(viewerConfigs.activeClass);
 				// add the --watched class to slides that have been watched if they don't exist already
 				if(!currentSlideEl.hasClass(viewerConfigs.watchedClass)){
 					currentSlideEl.addClass(viewerConfigs.watchedClass);
 				}
+				currentSlideEl.addClass(viewerConfigs.previousClass).removeClass(viewerConfigs.activeClass);
 				var nextSlideId = currentSlideId + 1 < args.length ? currentSlideId + 1 : args.length;
 				var nextSlideEl = $('body').find('[data-slide='+nextSlideId+']');
 				nextSlideEl.removeClass(viewerConfigs.nextClass).addClass(viewerConfigs.activeClass);
