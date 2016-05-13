@@ -1,59 +1,186 @@
-var configs = {
-		mediaType : 'slideshow',
-		withAudio : false,
-		autoplay : true,
-		lengthPerSlide : 5,
-		clickThroughWaitTime : 15
-};
-$(function(){
+//Step 1) Media Type
+//
+//if slideshow
+//
+//Step 2) Has Audio Track? (only slideshow)
+//
+//if yes, show audio track upload
+//if no, show autoplay selection (yes/no), show click through length (seconds)
+//
+//Step 3) Autoplay (only non-audio)
+//
+//if yes, show configuration for slide duration (seconds)
+//if no, do nothing
+//
+//Step 4) Click through Length (only non-audio)
+//
+//default value = 0 (seconds)
+//
+//Step 5) Slide Repeater
+//
+//show, image, title
+//if is audio, show timestamp for when the slide shows (seconds)
+
+$(function(){	
 	// grab all the slides into an array
-	var slides = $('.media-player__content-slide').map(function(){
-		return $(this).data('slide');
-	}).get();
-	
-	if(configs.autoplay){
-		play(configs.lengthPerSlide * 1000);
-	}
-	
-	$('body').on('click','.js-Next',{},function(){
-		setTimeout(next(slides),3000);
-	});
-	$('body').on('click','.js-Prev',{},function(){
-		setTimeout(prev(slides),3000);
-	});
-});
+	var slides = slideshow.load();
+	//progress bar will show for Autoplay, Audio Track (and of ourse vidoes)
+	if(configs.withAudio || configs.autoplay){
+		// if we have audio, autoplay settings should be ignored
+		if(configs.withAudio){
+			var duration =[];
+			$('.' + viewerConfigs.defaultClass).each(function(index){
+				duration.push($(this).attr('data-timestamp')*1000);
+			});
+			
+			$('body').on('click','.js-Next',{},function(){
+				// find the slide with the current class on it, get it's id
+				var currentSlideId = $('.' + viewerConfigs.activeClass).data('slide');
+				var currentSlideEl = $('body').find('[data-slide='+currentSlideId+']');
+				var nextSlideId;
+				if(currentSlideId + 1 > slides.length){
+					nextSlideId = slides.length;
+				}else{
+					nextSlideId = currentSlideId + 1;
+				}
+				// get the next slide id
+				var nextEl = $('body').find('[data-slide='+nextSlideId+']');
+				if(nextEl.hasClass(viewerConfigs.watchedClass)){
+					slideshow.controls.pause();
+					// we want to get the time stamp of that slide
+					var currentTimeStamp = nextEl.attr('data-timestamp');
+					$('audio')[0].currentTime = currentTimeStamp;
+					var loadNextSlide = setTimeout(slideshow.controls.next(slides),3000);
+					clearTimeout(loadNextSlide);
+					// set the time of video to the timestamp of the current slide
+					slideshow.controls.start({
+						withAudio : true,
+						slides : slides,
+						lengthPerSlide : duration
+					});
+				}
+			}).on('click','.js-Prev',{},function(){
+				slideshow.controls.pause();
+				// find the slide with the current class on it, get it's id
+				var currentSlideId = $('.' + viewerConfigs.activeClass).data('slide');
+				var currentSlideEl = $('body').find('[data-slide='+currentSlideId+']');
+				var prevSlideId;
+				if(currentSlideId < 1){
+					prevSlideId = currentSlideId;
+				}else{
+					prevSlideId = currentSlideId - 1;
+				}
+				// get the previous slide id
+				var prevEl = $('body').find('[data-slide='+prevSlideId+']');
+				// we want to get the time stamp of that slide
+				if(currentSlideId == 1){
+					var currentTimeStamp = 0
+				}else{
+					var currentTimeStamp = prevEl.attr('data-timestamp');
+				}
+				$('audio')[0].currentTime = currentTimeStamp;
+				var loadPreviousSlide = setTimeout(slideshow.controls.prev(slides),3000);
+				clearTimeout(loadPreviousSlide);
+				// set the time of video to the timestamp of the current slide
+				slideshow.controls.start({
+					withAudio : true,
+					slides : slides,
+					lengthPerSlide : duration
+				});
+			}).on('click','.js-Pause',{},function(){
+				// find the slide with the current class on it, get it's id
+				var currentSlideId = $('.' + viewerConfigs.activeClass).data('slide');
+				var currentSlideEl = $('body').find('[data-slide='+currentSlideId+']');
+				// we want to get the time stamp of that slide
+				if(currentSlideId == 1){
+					var currentTimeStamp = 0
+				}else{
+					var currentTimeStamp = currentSlideEl.attr('data-timestamp');
+				}
+				// pause the audio
+				audio.controls.pause();
+				// set the time of video to the timestamp of the current slide
+				$('audio')[0].currentTime = currentTimeStamp;
+				// pause the slideshow
+				slideshow.controls.pause();
+			}).on('click','.js-Play',{},function(){
+				audio.controls.start();
+				slideshow.controls.start({
+					withAudio : true,
+					slides : slides,
+					lengthPerSlide : duration
+				});
+			});
+		}else{
+			var clickThroughWaitTime = configs.clickThroughWaitTime * 1000;
+			var lengthPerSlide = configs.lengthPerSlide * 1000;
 
-// Load next slide, move current slide to previous position
-function next(slides){
-	var currentSlideId = $('.media-player__content-slide--current').data('slide');
-	if(currentSlideId < slides.length){
-		var currentSlideEl = $('body').find('[data-slide='+currentSlideId+']');
-		currentSlideEl.addClass('media-player__content-slide--previous').removeClass('media-player__content-slide--current');
-		var nextSlideId = currentSlideId + 1 < slides.length ? currentSlideId + 1 : slides.length;
-		var nextSlideEl = $('body').find('[data-slide='+nextSlideId+']');
-		nextSlideEl.removeClass('media-player__content-slide--next').addClass('media-player__content-slide--current');
+			// if we have autoplay
+			// we should get the lenght per slide
+			if(configs.autoplay){
+				// Start the slideshow and progress bar
+				slideshow.controls.start({
+					slides : slides,
+					lengthPerSlide : lengthPerSlide
+				});
+				$('body').on('click','.js-Next',{},function(){
+					var clickThroughWaitTime = configs.clickThroughWaitTime * 1000;
+					var lengthPerSlide = configs.lengthPerSlide * 1000;
+					var currentSlideId = $('.' + viewerConfigs.activeClass).data('slide');
+					var currentSlideEl = $('body').find('[data-slide='+currentSlideId+']');
+					var nextSlideId;
+					if(currentSlideId + 1 > slides.length){
+						nextSlideId = slides.length;
+					}else{
+						nextSlideId = currentSlideId + 1;
+					}
+					// get the next slide id
+					var nextEl = $('body').find('[data-slide='+nextSlideId+']');
+					if(nextEl.hasClass(viewerConfigs.watchedClass)){
+						slideshow.controls.pause();
+						var loadNextSlide = setTimeout(slideshow.controls.next(slides));
+						clearTimeout(loadNextSlide);
+						
+						slideshow.controls.start({
+							slides : slides,
+							lengthPerSlide : lengthPerSlide
+						});
+					}
+				}).on('click','.js-Prev',{},function(){
+					// pause everything
+					slideshow.controls.pause();
+					var loadPreviousSlide = setTimeout(slideshow.controls.prev(slides));
+					clearTimeout(loadPreviousSlide);
+					// resume everything
+					slideshow.controls.start({
+						slides : slides,
+						lengthPerSlide : lengthPerSlide
+					});
+				}).on('click','.js-Pause',{},function(){
+					slideshow.controls.pause();
+				}).on('click','.js-Play',{},function(){
+					slideshow.controls.start({
+						slides : slides,
+						lengthPerSlide : lengthPerSlide
+					});
+				});
+			}
+			// regardless we should have a click through wait time per slide
+		}
 		
+	}else{
+		// load basic slideshow control events
+		$('body').on('click','.js-Next',{},function(){
+			var loadNextSlide = setTimeout(slideshow.controls.next(slides),3000);
+			clearTimeout(loadNextSlide);
+		}).on('click','.js-Prev',{},function(){
+			var loadPreviousSlide = setTimeout(slideshow.controls.prev(slides),3000);
+			clearTimeout(loadPreviousSlide);
+		});
 	}
-}
-// Load previous slide, move current slide to next position
-function prev(slides){
-	var currentSlideId = $('.media-player__content-slide--current').data('slide');
-	if(currentSlideId > 1){
-		var currentSlideEl = $('body').find('[data-slide='+currentSlideId+']');
-		currentSlideEl.addClass('media-player__content-slide--next').removeClass('media-player__content-slide--current');
-		var prevSlideId = currentSlideId - 1 > 0 ? currentSlideId - 1 : 1;
-		var prevSlideEl = $('body').find('[data-slide='+prevSlideId+']');
-		prevSlideEl.removeClass('media-player__content-slide--previous').addClass('media-player__content-slide--current');
-	}
-}
+});
+	
 
-// Play slideshow, with the time per transition = length per slide * index of slide 
-function play(args){
-	$('.media-player__content-slide').each(function(index){
-		var slide = $(this);
-		setTimeout(function(){	
-		//
-		}, args * index);
-	});
-}
+
+
 

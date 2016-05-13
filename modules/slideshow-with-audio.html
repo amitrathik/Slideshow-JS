@@ -2,19 +2,18 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Slideshow JS | Without Audio and Without Autoplay</title>
+	<title>Slideshow JS</title>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+	<script src="../slideshow.js"></script>
 	<script type="text/javascript">
 		var configs = {
-			mediaType : 'slideshow',
-			withAudio : false,
-			autoplay : false,
-			lengthPerSlide : 5,
-			clickThroughWaitTime : 0
+				mediaType : 'slideshow',
+				withAudio : true,
+				autoplay : false,
+				lengthPerSlide : 5,
+				clickThroughWaitTime : 0
 		};
-	
 	</script>
-	<script src="../slideshow.js"></script>
 	<script src="../script.js"></script>
 	<style>
 		body{margin:0;padding:0;}
@@ -38,7 +37,7 @@
 </head>
 <body>
 	<div class="container">
-		<h2>Slideshow Without Audio and Without AutoPlay</h2>
+		<h2>Slideshow With Audio and Without AutoPlay</h2>
 		<div class="timeline">
 			<ol>
 				<li><a href="#" data-timeline="5">Red Slide</a> <span>0:05</span></li>
@@ -50,15 +49,29 @@
 		</div>
 		<div class="media-player">
 			<div class="media-player__content">
-				<div class="media-player__content-slide media-player__content-slide--current" data-slide="1" style="background-color:red;"></div>
-			 	<div class="media-player__content-slide media-player__content-slide--next" data-slide="2" style="background-color:blue;"></div>
-				<div class="media-player__content-slide media-player__content-slide--next" data-slide="3" style="background-color:green;"></div> 
-				<div class="media-player__content-slide media-player__content-slide--next" data-slide="4" style="background-color:purple;"></div> 
-				<div class="media-player__content-slide media-player__content-slide--next" data-slide="5" style="background-color:yellow;"></div> 
+				<div class="media-player__content-slide media-player__content-slide--current" data-slide="1" data-timestamp="5" style="background-color:red;"></div>
+			 	<div class="media-player__content-slide media-player__content-slide--next" data-slide="2" data-timestamp="10" style="background-color:blue;"></div>
+				<div class="media-player__content-slide media-player__content-slide--next" data-slide="3" data-timestamp="15" style="background-color:green;"></div> 
+				<div class="media-player__content-slide media-player__content-slide--next" data-slide="4" data-timestamp="20" style="background-color:purple;"></div> 
+				<div class="media-player__content-slide media-player__content-slide--next" data-slide="5" data-timestamp="25" style="background-color:yellow;"></div> 
 			</div>
 		</div>
+		<div class="progress-bar">
+			<ol>
+				<li><a class="progress-bar__progress" href="#" data-timeline="5" data-progress="1">o</a></li>
+				<li><a  class="progress-bar__progress" href="#" data-timeline="10" data-progress="2">o</a></li>
+				<li><a  class="progress-bar__progress" href="#" data-timeline="15" data-progress="3">o</a></li>
+				<li><a  class="progress-bar__progress" href="#" data-timeline="20" data-progress="4">o</a></li>
+				<li><a  class="progress-bar__progress" href="#" data-timeline="25" data-progress="5">o</a></li>
+			</ol>
+		</div>
+		<audio controls>
+			<source src="audio.mp3" type="audio/mpeg" >
+		</audio>
 		<button class="js-Prev">Previous</button>
-		<button class="js-Next">Next</button>	
+		<button class="js-Next">Next</button>
+		<button class="js-Pause">Pause</button>
+		<button class="js-Play">Play</button>
 	</div>
 </body>
 </html>

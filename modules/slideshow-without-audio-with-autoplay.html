@@ -2,8 +2,18 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Slideshow JS</title>
+	<title>Slideshow JS | Without Audio and With Autoplay</title>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+	<script src="../slideshow.js"></script>
+	<script type="text/javascript">
+		var configs = {
+				mediaType : 'slideshow',
+				withAudio : false,
+				autoplay : true,
+				lengthPerSlide : 5,
+				clickThroughWaitTime : 15
+		};
+	</script>
 	<script src="../script.js"></script>
 	<style>
 		body{margin:0;padding:0;}
@@ -21,20 +31,21 @@
 		audio {width:75%;float:right; display:block; margin:0 auto;}
 		.progress-bar {width:75%; float:right; border:1px solid;}
 		.progress-bar ol:after{ clear:both;display:block;content:""; }
-		.progress-bar ol{list-style:none;}
+		.progress-bar ol{list-style:none; margin:0; padding:0;}
 		.progress-bar li{float:left;width:20%; text-align:center;}
+		.progress-bar li a {display:block;}
 	</style>
 </head>
 <body>
-	<h2>Slideshow Without Audio and With AutoPlay</h2>
 	<div class="container">
+		<h2>Slideshow Without Audio and With AutoPlay</h2>
 		<div class="timeline">
 			<ol>
-				<li><a href="#" data-timeline="15">Red Slide</a> <span>0:15</span></li>
-				<li><a href="#" data-timeline="45">Blue Slide</a><span>0:45</span></li>
-				<li><a href="#" data-timeline="55">Green Slide</a><span>0:55</span></li>
-				<li><a href="#" data-timeline="60">Purple Slide</a><span>1:00</span></li>
-				<li><a href="#" data-timeline="75">Yellow Slide</a><span>1:15</span></li>
+				<li><a href="#" data-timeline="5">Red Slide</a> <span>0:05</span></li>
+				<li><a href="#" data-timeline="10">Blue Slide</a><span>0:10</span></li>
+				<li><a href="#" data-timeline="15">Green Slide</a><span>0:15</span></li>
+				<li><a href="#" data-timeline="20">Purple Slide</a><span>0:20</span></li>
+				<li><a href="#" data-timeline="25">Yellow Slide</a><span>0:25</span></li>
 			</ol>
 		</div>
 		<div class="media-player">
@@ -48,13 +59,17 @@
 		</div>
 		<div class="progress-bar">
 			<ol>
-				<li><a href="#" data-timeline="15">o</a></li>
-				<li><a href="#" data-timeline="45">o</a></li>
-				<li><a href="#" data-timeline="55">o</a></li>
-				<li><a href="#" data-timeline="60">o</a></li>
-				<li><a href="#" data-timeline="75">o</a></li>
+				<li><a class="progress-bar__progress" href="#" data-timeline="5" data-progress="1">o</a></li>
+				<li><a  class="progress-bar__progress" href="#" data-timeline="10" data-progress="2">o</a></li>
+				<li><a  class="progress-bar__progress" href="#" data-timeline="15" data-progress="3">o</a></li>
+				<li><a  class="progress-bar__progress" href="#" data-timeline="20" data-progress="4">o</a></li>
+				<li><a  class="progress-bar__progress" href="#" data-timeline="25" data-progress="5">o</a></li>
 			</ol>
 		</div>
+		<button class="js-Prev">Previous</button>
+		<button class="js-Next">Next</button>
+		<button class="js-Pause">Pause</button>
+		<button class="js-Play">Play</button>
 	</div>
 </body>
 </html>
